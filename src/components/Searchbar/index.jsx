@@ -17,8 +17,8 @@ class SearchBar extends Component {
       alert('Введите название');
       return;
     }
+
     this.props.onSubmit(this.state.inputValue);
-    this.setState({ inputValue: '' });
   };
 
   render() {

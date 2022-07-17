@@ -15,6 +15,7 @@ class App extends Component {
     loading: false,
     showModal: false,
     modalImage: '',
+    totalImages: 0,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -27,20 +28,29 @@ class App extends Component {
         `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=${APIKEY}&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => response.json())
-        .then(({ hits }) => {
-          if (hits.length < 1) {
+        .then(image => {
+          if (!image.total) {
             return alert('К сожалению по Вашему запросу ничего не найдено');
           }
+
           this.setState(prevState => ({
-            images: [...prevState.images, ...hits],
+            images: [...prevState.images, ...image.hits],
+            totalImages: image.total,
           }));
         })
         .catch(error => error)
-        .finally(() => this.setState({ loading: false }));
+        .finally(() => {
+          console.log('totalimgt', this.state.totalImages);
+          console.log('img', this.state.images.length);
+          this.setState({ loading: false });
+        });
     }
   }
 
   handleSubmit = name => {
+    if (this.state.name === name) {
+      return alert(`Вы уже просматриваете ${name}`);
+    }
     this.setState({ name: name.toLowerCase(), images: [], page: 1 });
   };
 
@@ -60,7 +70,8 @@ class App extends Component {
   };
 
   render() {
-    const { images, loading, showModal, modalImage } = this.state;
+    const { images, loading, showModal, modalImage, totalImages } = this.state;
+
     return (
       <>
         {!showModal && <SearchBar onSubmit={this.handleSubmit} />}
@@ -68,7 +79,11 @@ class App extends Component {
         {images.length !== 0 && (
           <ImageGallery images={images} onImageClick={this.onImageClick} />
         )}
-        {images.length > 11 && <Button onClick={this.onLoadMoreClick} />}
+
+        {images.length !== totalImages && !loading && (
+          <Button onClick={this.onLoadMoreClick} />
+        )}
+
         {showModal && (
           <Modal
             image={modalImage}
@@ -80,5 +95,7 @@ class App extends Component {
     );
   }
 }
+
+// если фечТотал равен длина массива тогда - false
 
 export default App;
