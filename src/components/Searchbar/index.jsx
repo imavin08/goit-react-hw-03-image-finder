@@ -25,9 +25,7 @@ class SearchBar extends Component {
     return (
       <header className={css.searchbar}>
         <form onSubmit={this.onFormSubmit} className={css.searchForm}>
-          <button type="submit" className={css.searchFormButton}>
-            <span className={css.searchFormButtonLabel}>Search</span>
-          </button>
+          <button type="submit" className={css.searchFormButton}></button>
 
           <input
             onChange={this.handleInputChange}
