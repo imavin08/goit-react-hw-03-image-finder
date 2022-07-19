@@ -74,7 +74,7 @@ class App extends Component {
 
     return (
       <>
-        {!showModal && <SearchBar onSubmit={this.handleSubmit} />}
+        <SearchBar onSubmit={this.handleSubmit} />
         {loading && <Loader />}
         {images.length !== 0 && (
           <ImageGallery images={images} onImageClick={this.onImageClick} />
@@ -95,7 +95,5 @@ class App extends Component {
     );
   }
 }
-
-// если фечТотал равен длина массива тогда - false
 
 export default App;
