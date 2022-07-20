@@ -40,8 +40,6 @@ class App extends Component {
         })
         .catch(error => error)
         .finally(() => {
-          console.log('totalimgt', this.state.totalImages);
-          console.log('img', this.state.images.length);
           this.setState({ loading: false });
         });
     }
